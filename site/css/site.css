@@ -154,7 +154,7 @@ header{position:relative;z-index:20;padding-top:calc(12px + env(safe-area-inset-
 .pname .ico{grid-column:1;grid-row:2;width:36px;height:36px;border-radius:10px}
 .pname .ico svg{width:18px;height:18px}
 /* every section heading shares one size, tracking and leading */
-.copy h2,.dpanel h2,.faq h2,.cpanel h2,.shead h2,.why h2,.pcta h2{font-size:var(--fs-h2);font-weight:600;line-height:1.04;letter-spacing:-.035em}
+.copy h2,.dpanel h1,.faq h2,.cpanel h2,.shead h2,.why h2,.pcta h2{font-size:var(--fs-h2);font-weight:600;line-height:1.04;letter-spacing:-.035em}
 .copy .tagline{font-size:var(--fs-lead);line-height:1.4;color:var(--ink);font-weight:500;letter-spacing:-.012em;margin:0;max-width:32ch;text-wrap:balance}
 .copy .desc{font-size:var(--fs-body);line-height:1.7;color:var(--ink-2);margin:0;max-width:50ch}
 .feats{list-style:none;margin:2px 0 0;padding:0;display:grid;gap:10px}
@@ -240,7 +240,8 @@ header{position:relative;z-index:20;padding-top:calc(12px + env(safe-area-inset-
 
 
 /* dashboards offer */
-.dash .wrap{padding-block:0 var(--band)}
+/* dashboards page: the panel sits right under the header */
+.dash .wrap{padding-block:clamp(16px,3vw,32px) var(--band)}
 /* the panel takes the page's columns (subgrid): heading across 2-11, then one row per sample dashboard
    with its copy on 2-6 and its screenshot on 7-11, mirrored on .flip; rows are split by a hairline */
 .dpanel{grid-column:1/-1;border-radius:28px;background:var(--surface);padding:clamp(40px,5vw,72px) 24px;display:grid;grid-template-columns:subgrid;row-gap:clamp(48px,6vw,72px);align-items:center}
@@ -251,14 +252,14 @@ header{position:relative;z-index:20;padding-top:calc(12px + env(safe-area-inset-
 .drow .slides{grid-column:6/11}
 .drow.flip .dcopy{grid-column:6/11;grid-row:1;padding:0 0 0 clamp(0px,2vw,32px)}
 .drow.flip .slides{grid-column:1/6;grid-row:1}
-.dcopy h3{margin:0 0 10px;font-size:clamp(24px,2.4vw,30px);font-weight:600;line-height:1.15;letter-spacing:-.025em}
+.dcopy h2{margin:0 0 10px;font-size:clamp(24px,2.4vw,30px);font-weight:600;line-height:1.15;letter-spacing:-.025em}
 .dpanel .snote{margin:0;max-width:none;text-align:center;font-size:13px;line-height:1.4;color:var(--muted)}
 /* five tabs plus the pause button fit the 5-column slideshow without scrolling at desktop */
 .dpanel .tabs button{padding:0 8px}
 .dpanel .tabbar{gap:6px}
 @media (max-width:920px){.dpanel{grid-template-columns:minmax(0,1fr);padding:clamp(28px,5vw,48px)}.dhead,.drow{grid-column:1/-1}.drow{grid-template-columns:minmax(0,1fr)}.drow .dcopy,.drow .slides,.drow.flip .dcopy,.drow.flip .slides{grid-column:1/-1;grid-row:auto;padding:0}}
-.dpanel h2{margin:0}
-.dpanel h2 em{font-style:normal;color:var(--accent-deep)}
+.dpanel h1{margin:0}
+.dpanel h1 em{font-style:normal;color:var(--accent-deep)}
 .dpanel p{font-size:var(--fs-body);line-height:1.7;color:var(--ink-2);margin:0;max-width:46ch}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 26px;padding:0;list-style:none}
 .chips li{font-size:13.5px;padding:7px 13px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}

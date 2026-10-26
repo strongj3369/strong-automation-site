@@ -2,6 +2,8 @@
 (function(root){
   /* old one-page product links now live on products.html (homepage only: those hashes are real anchors on products.html) */
   if(root.hasAttribute('data-home')&&/^#(strongpantry|celestial-destiny|signal|colortunelyrics|run-offline)$/.test(location.hash))location.replace('products.html'+location.hash);
+  /* the dashboards section now has its own page */
+  if(root.hasAttribute('data-home')&&/^#(dashboards|dash-title)$/.test(location.hash))location.replace('dashboards.html');
   /* the rise starting state only exists when the reveal can run */
   if('IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches)root.classList.add('rise');
 })(document.documentElement);
