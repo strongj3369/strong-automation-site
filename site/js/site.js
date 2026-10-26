@@ -103,17 +103,6 @@
     requestAnimationFrame(function(){requestAnimationFrame(function(){bar2.classList.add('go');});});
   });
 
-  /* dashboard switcher (homepage): shows one sample dashboard's slideshow at a time */
-  var dsw=document.querySelector('.dswitch');
-  if(dsw)(function(){
-  var dbtns=[].slice.call(dsw.querySelectorAll('button'));
-  dbtns.forEach(function(b){b.addEventListener('click',function(){
-    dbtns.forEach(function(x){var on=x===b;x.setAttribute('aria-pressed',on);document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
-    /* the newly shown tab row was measured while hidden: re-measure its underline and edge fades */
-    dispatchEvent(new Event('resize'));
-  });});
-  })();
-
   /* signature moment: reveal each product frame once when a fifth of it is on screen */
   if(document.documentElement.classList.contains('rise')){
     var riser=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('risen');riser.unobserve(e.target);}});},{threshold:.2,rootMargin:'0px 0px -8% 0px'});

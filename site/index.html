@@ -47,12 +47,12 @@
       <nav class="nav" aria-label="Main">
         <a class="link" href="#top" aria-current="page">Home</a>
         <a class="link" href="products.html">Products</a>
-        <a class="link" href="#dashboards">Dashboards</a>
+        <a class="link" href="#dash-title">Dashboards</a>
         <a class="btn btn-primary" href="#contact">Contact</a>
         <details class="menu">
           <summary aria-label="Menu"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h12M3 9h12M3 13h12"/></svg></summary>
           <div class="sheet">
-            <a href="#top" aria-current="page">Home</a><a href="products.html">Products</a><a href="#dashboards">Dashboards</a><a href="#contact">Contact</a>
+            <a href="#top" aria-current="page">Home</a><a href="products.html">Products</a><a href="#dash-title">Dashboards</a><a href="#contact">Contact</a>
           </div>
         </details>
       </nav>
@@ -123,84 +123,94 @@
         <div class="dhead">
           <h2 id="dash-title">Need a dashboard? <em>We love building them.</em></h2>
         </div>
-        <div class="dbody">
-          <p>One screen for everything you track. We connect your tools, pull in live data and turn it into a dashboard you'll actually open every day.</p>
-          <ul class="chips">
-            <li>Sales &amp; revenue</li><li>Website analytics</li><li>Social media</li><li>Operations</li><li>Finance &amp; cash flow</li><li>AI tool control panels</li>
-          </ul>
-          <a class="btn btn-accent" href="#contact">Request a dashboard <svg><use href="#i-arrow"/></svg></a>
+        <div class="drow" aria-labelledby="dash-ec-title" role="group">
+          <div class="dcopy">
+            <h3 id="dash-ec-title">For online stores</h3>
+            <p>See every sale, product and channel in one place.</p>
+            <ul class="chips"><li>Revenue</li><li>Orders</li><li>Top products</li><li>Sales channels</li></ul>
+            <a class="btn btn-accent" href="#contact" aria-describedby="dash-ec-title">Request a dashboard like this <svg><use href="#i-arrow"/></svg></a>
+          </div>
+            <div class="slides" id="dash-ec" data-slides role="region" aria-roledescription="carousel" aria-label="E-commerce dashboard screenshots">
+              <div class="track">
+                <div class="slide on" id="ec-s1" role="tabpanel" aria-labelledby="ec-t1">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/ecommerce/1-revenue.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Store dashboard for Fernbrook Goods: $152,287 revenue over the last 30 days charted against the previous period, above orders, average order value, conversion rate and returning customers"></div></div>
+                </div>
+                <div class="slide" id="ec-s2" role="tabpanel" aria-labelledby="ec-t2">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/ecommerce/2-products-channels.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Top products table sorted by revenue, beside sales by channel (online store, Instagram Shop, email campaigns, wholesale) and a sales-by-category donut chart"></div></div>
+                </div>
+                <div class="slide" id="ec-s3" role="tabpanel" aria-labelledby="ec-t3">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/ecommerce/3-recent-orders.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Recent orders with order number, customer, items, status and total, filterable by paid, shipped, delivered and refunded"></div></div>
+                </div>
+              </div>
+              <div class="tabs" role="tablist" aria-label="E-commerce dashboard screenshots">
+                <button type="button" role="tab" id="ec-t1" aria-controls="ec-s1" aria-selected="true">Revenue</button>
+                <button type="button" role="tab" id="ec-t2" aria-controls="ec-s2" aria-selected="false" tabindex="-1">Products</button>
+                <button type="button" role="tab" id="ec-t3" aria-controls="ec-s3" aria-selected="false" tabindex="-1">Orders</button>
+              </div>
+              <p class="snote">Sample data</p>
+            </div>
         </div>
-        <div class="dshow">
-        <div class="dswitch" role="group" aria-label="Sample dashboard">
-          <button type="button" aria-pressed="true" aria-controls="dash-biz">Business</button>
-          <button type="button" aria-pressed="false" aria-controls="dash-ec">E-commerce</button>
-          <button type="button" aria-pressed="false" aria-controls="dash-re">Real estate</button>
+        <div class="drow flip" aria-labelledby="dash-re-title" role="group">
+          <div class="dcopy">
+            <h3 id="dash-re-title">For realtors</h3>
+            <p>Every listing, lead and closing, tracked for you.</p>
+            <ul class="chips"><li>Listings</li><li>Leads</li><li>Pipeline</li><li>Commission</li></ul>
+            <a class="btn btn-accent" href="#contact" aria-describedby="dash-re-title">Request a dashboard like this <svg><use href="#i-arrow"/></svg></a>
+          </div>
+            <div class="slides" id="dash-re" data-slides role="region" aria-roledescription="carousel" aria-label="Real estate dashboard screenshots">
+              <div class="track">
+                <div class="slide on" id="re-s1" role="tabpanel" aria-labelledby="re-t1">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/realestate/1-listings-map.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Real estate agent dashboard for Harlow &amp; Pine: active listings, listing volume, days on market and commission above a map of a sample city with price pins, beside the list of listings"></div></div>
+                </div>
+                <div class="slide" id="re-s2" role="tabpanel" aria-labelledby="re-t2">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/realestate/2-pipeline-leads.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Sales pipeline for the quarter, from 64 leads through showings, offers and contracts to 4 closed sales, above lead sources ranked from referrals to Instagram"></div></div>
+                </div>
+                <div class="slide" id="re-s3" role="tabpanel" aria-labelledby="re-t3">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/realestate/3-sales-coming-up.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Homes closed and commission for the last 12 months as bars and a line, above upcoming showings, an open house and closings"></div></div>
+                </div>
+              </div>
+              <div class="tabs" role="tablist" aria-label="Real estate dashboard screenshots">
+                <button type="button" role="tab" id="re-t1" aria-controls="re-s1" aria-selected="true">Listings</button>
+                <button type="button" role="tab" id="re-t2" aria-controls="re-s2" aria-selected="false" tabindex="-1">Pipeline</button>
+                <button type="button" role="tab" id="re-t3" aria-controls="re-s3" aria-selected="false" tabindex="-1">Sales</button>
+              </div>
+              <p class="snote">Sample data</p>
+            </div>
         </div>
-        <div class="slides" id="dash-biz" data-slides role="region" aria-roledescription="carousel" aria-label="Business dashboard screenshots">
-          <div class="track">
-            <div class="slide on" id="db-s1" role="tabpanel" aria-labelledby="db-t1">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/1-overview.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Dashboard overview: live status cards for stocks, analytics, product analytics and Instagram above a grid of eight tool modules"></div></div>
-            </div>
-            <div class="slide" id="db-s2" role="tabpanel" aria-labelledby="db-t2">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/2-analytics.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Analytics page comparing three sample sites, Main Website, Online Store and Blog, by sessions, bounce rate, visit length and trend"></div></div>
-            </div>
-            <div class="slide" id="db-s3" role="tabpanel" aria-labelledby="db-t3">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/3-stocks.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Stocks page for a sample paper-trading account: portfolio value, open positions and a watchlist"></div></div>
-            </div>
-            <div class="slide" id="db-s4" role="tabpanel" aria-labelledby="db-t4">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/4-instagram.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Instagram page for a sample brand account: followers, engagement rate, average likes and recent posts about a product launch"></div></div>
-            </div>
-            <div class="slide" id="db-s5" role="tabpanel" aria-labelledby="db-t5">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/5-marketing.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Marketing page: active campaigns, leads and conversions, an AI social post generator and a campaign table"></div></div>
-            </div>
+        <div class="drow" aria-labelledby="dash-biz-title" role="group">
+          <div class="dcopy">
+            <h3 id="dash-biz-title">For your whole operation</h3>
+            <p>Analytics, social and tools on one screen.</p>
+            <ul class="chips"><li>Website analytics</li><li>Social media</li><li>Marketing</li><li>AI tools</li></ul>
+            <a class="btn btn-accent" href="#contact" aria-describedby="dash-biz-title">Request a dashboard like this <svg><use href="#i-arrow"/></svg></a>
           </div>
-          <div class="tabs" role="tablist" aria-label="Business dashboard screenshots">
-            <button type="button" role="tab" id="db-t1" aria-controls="db-s1" aria-selected="true">Overview</button>
-            <button type="button" role="tab" id="db-t2" aria-controls="db-s2" aria-selected="false" tabindex="-1">Analytics</button>
-            <button type="button" role="tab" id="db-t3" aria-controls="db-s3" aria-selected="false" tabindex="-1">Stocks</button>
-            <button type="button" role="tab" id="db-t4" aria-controls="db-s4" aria-selected="false" tabindex="-1">Instagram</button>
-            <button type="button" role="tab" id="db-t5" aria-controls="db-s5" aria-selected="false" tabindex="-1">Marketing</button>
-          </div>
-          <p class="snote">Sample data</p>
-        </div>
-        <div class="slides" id="dash-ec" data-slides role="region" aria-roledescription="carousel" aria-label="E-commerce dashboard screenshots" hidden>
-          <div class="track">
-            <div class="slide on" id="ec-s1" role="tabpanel" aria-labelledby="ec-t1">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/ecommerce/1-revenue.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Store dashboard for Fernbrook Goods: $152,287 revenue over the last 30 days charted against the previous period, above orders, average order value, conversion rate and returning customers"></div></div>
+            <div class="slides" id="dash-biz" data-slides role="region" aria-roledescription="carousel" aria-label="Business dashboard screenshots">
+              <div class="track">
+                <div class="slide on" id="db-s1" role="tabpanel" aria-labelledby="db-t1">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/1-overview.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Dashboard overview: live status cards for stocks, analytics, product analytics and Instagram above a grid of eight tool modules"></div></div>
+                </div>
+                <div class="slide" id="db-s2" role="tabpanel" aria-labelledby="db-t2">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/2-analytics.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Analytics page comparing three sample sites, Main Website, Online Store and Blog, by sessions, bounce rate, visit length and trend"></div></div>
+                </div>
+                <div class="slide" id="db-s3" role="tabpanel" aria-labelledby="db-t3">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/3-stocks.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Stocks page for a sample paper-trading account: portfolio value, open positions and a watchlist"></div></div>
+                </div>
+                <div class="slide" id="db-s4" role="tabpanel" aria-labelledby="db-t4">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/4-instagram.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Instagram page for a sample brand account: followers, engagement rate, average likes and recent posts about a product launch"></div></div>
+                </div>
+                <div class="slide" id="db-s5" role="tabpanel" aria-labelledby="db-t5">
+                  <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/5-marketing.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Marketing page: active campaigns, leads and conversions, an AI social post generator and a campaign table"></div></div>
+                </div>
+              </div>
+              <div class="tabs" role="tablist" aria-label="Business dashboard screenshots">
+                <button type="button" role="tab" id="db-t1" aria-controls="db-s1" aria-selected="true">Overview</button>
+                <button type="button" role="tab" id="db-t2" aria-controls="db-s2" aria-selected="false" tabindex="-1">Analytics</button>
+                <button type="button" role="tab" id="db-t3" aria-controls="db-s3" aria-selected="false" tabindex="-1">Stocks</button>
+                <button type="button" role="tab" id="db-t4" aria-controls="db-s4" aria-selected="false" tabindex="-1">Instagram</button>
+                <button type="button" role="tab" id="db-t5" aria-controls="db-s5" aria-selected="false" tabindex="-1">Marketing</button>
+              </div>
+              <p class="snote">Sample data</p>
             </div>
-            <div class="slide" id="ec-s2" role="tabpanel" aria-labelledby="ec-t2">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/ecommerce/2-products-channels.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Top products table sorted by revenue, beside sales by channel (online store, Instagram Shop, email campaigns, wholesale) and a sales-by-category donut chart"></div></div>
-            </div>
-            <div class="slide" id="ec-s3" role="tabpanel" aria-labelledby="ec-t3">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/ecommerce/3-recent-orders.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Recent orders with order number, customer, items, status and total, filterable by paid, shipped, delivered and refunded"></div></div>
-            </div>
-          </div>
-          <div class="tabs" role="tablist" aria-label="E-commerce dashboard screenshots">
-            <button type="button" role="tab" id="ec-t1" aria-controls="ec-s1" aria-selected="true">Revenue</button>
-            <button type="button" role="tab" id="ec-t2" aria-controls="ec-s2" aria-selected="false" tabindex="-1">Products</button>
-            <button type="button" role="tab" id="ec-t3" aria-controls="ec-s3" aria-selected="false" tabindex="-1">Orders</button>
-          </div>
-          <p class="snote">Sample data</p>
-        </div>
-        <div class="slides" id="dash-re" data-slides role="region" aria-roledescription="carousel" aria-label="Real estate dashboard screenshots" hidden>
-          <div class="track">
-            <div class="slide on" id="re-s1" role="tabpanel" aria-labelledby="re-t1">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/realestate/1-listings-map.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Real estate agent dashboard for Harlow &amp; Pine: active listings, listing volume, days on market and commission above a map of a sample city with price pins, beside the list of listings"></div></div>
-            </div>
-            <div class="slide" id="re-s2" role="tabpanel" aria-labelledby="re-t2">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/realestate/2-pipeline-leads.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Sales pipeline for the quarter, from 64 leads through showings, offers and contracts to 4 closed sales, above lead sources ranked from referrals to Instagram"></div></div>
-            </div>
-            <div class="slide" id="re-s3" role="tabpanel" aria-labelledby="re-t3">
-              <div class="frame"><div class="screen"><div class="wbar"><i></i><i></i><i></i><span class="url">sample dashboard</span></div><img src="img/dashboards/realestate/3-sales-coming-up.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Homes closed and commission for the last 12 months as bars and a line, above upcoming showings, an open house and closings"></div></div>
-            </div>
-          </div>
-          <div class="tabs" role="tablist" aria-label="Real estate dashboard screenshots">
-            <button type="button" role="tab" id="re-t1" aria-controls="re-s1" aria-selected="true">Listings</button>
-            <button type="button" role="tab" id="re-t2" aria-controls="re-s2" aria-selected="false" tabindex="-1">Pipeline</button>
-            <button type="button" role="tab" id="re-t3" aria-controls="re-s3" aria-selected="false" tabindex="-1">Sales</button>
-          </div>
-          <p class="snote">Sample data</p>
-        </div>
         </div>
       </div>
     </div>

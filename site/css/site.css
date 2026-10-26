@@ -242,23 +242,22 @@ header .wrap{position:relative}
 
 /* dashboards offer */
 .dash .wrap{padding-block:0 var(--band)}
-/* the panel takes the page's columns (subgrid): heading across 2-11, copy 2-6, screenshot 7-11 */
-.dpanel{grid-column:1/-1;border-radius:28px;background:var(--surface);padding:clamp(40px,5vw,72px) 24px;display:grid;grid-template-columns:subgrid;row-gap:36px;align-items:center}
+/* the panel takes the page's columns (subgrid): heading across 2-11, then one row per sample dashboard
+   with its copy on 2-6 and its screenshot on 7-11, mirrored on .flip; rows are split by a hairline */
+.dpanel{grid-column:1/-1;border-radius:28px;background:var(--surface);padding:clamp(40px,5vw,72px) 24px;display:grid;grid-template-columns:subgrid;row-gap:clamp(48px,6vw,72px);align-items:center}
 .dhead{grid-column:2/12}
-.dbody{grid-column:2/7}
-.dpanel .dshow{grid-column:7/12;display:grid;gap:18px;min-width:0}
-.slides[hidden]{display:none}
-/* dashboard switcher: one segmented pill above the slideshow */
-.dswitch{justify-self:center;display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--bg);border:1px solid var(--line);max-width:100%}
-.dswitch button{height:34px;padding:0 14px;border:0;border-radius:999px;background:none;color:var(--muted);font:500 13.5px var(--f-sans);white-space:nowrap;cursor:pointer;transition:color .15s ease-out,background-color .15s ease-out,box-shadow .15s ease-out}
-@media (hover:hover) and (pointer:fine){.dswitch button:hover{color:var(--ink)}}
-.dswitch button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm),0 0 0 1px var(--line)}
-@media (max-width:560px){.dswitch button{height:40px;padding:0 12px}}
+.drow{grid-column:2/12;display:grid;grid-template-columns:subgrid;align-items:center;row-gap:28px}
+.drow + .drow{padding-top:clamp(48px,6vw,72px);border-top:1px solid var(--line)}
+.dcopy{grid-column:1/6;padding-right:clamp(0px,2vw,32px)}
+.drow .slides{grid-column:6/11}
+.drow.flip .dcopy{grid-column:6/11;grid-row:1;padding:0 0 0 clamp(0px,2vw,32px)}
+.drow.flip .slides{grid-column:1/6;grid-row:1}
+.dcopy h3{margin:0 0 10px;font-size:clamp(24px,2.4vw,30px);font-weight:600;line-height:1.15;letter-spacing:-.025em}
 .dpanel .snote{margin:0;max-width:none;text-align:center;font-size:13px;line-height:1.4;color:var(--muted)}
 /* five tabs plus the pause button fit the 5-column slideshow without scrolling at desktop */
 .dpanel .tabs button{padding:0 8px}
 .dpanel .tabbar{gap:6px}
-@media (max-width:920px){.dpanel{grid-template-columns:minmax(0,1fr);padding:clamp(28px,5vw,48px)}.dhead,.dbody,.dpanel .dshow{grid-column:1/-1}}
+@media (max-width:920px){.dpanel{grid-template-columns:minmax(0,1fr);padding:clamp(28px,5vw,48px)}.dhead,.drow{grid-column:1/-1}.drow{grid-template-columns:minmax(0,1fr)}.drow .dcopy,.drow .slides,.drow.flip .dcopy,.drow.flip .slides{grid-column:1/-1;grid-row:auto;padding:0}}
 .dpanel h2{margin:0}
 .dpanel h2 em{font-style:normal;color:var(--accent-deep)}
 .dpanel p{font-size:var(--fs-body);line-height:1.7;color:var(--ink-2);margin:0;max-width:46ch}
