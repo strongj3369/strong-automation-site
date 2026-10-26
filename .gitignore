@@ -1,0 +1,20 @@
+# Only the public site (site/), its deploy workflow and this file are published.
+# Everything below stays on this machine.
+
+# planning and notes
+DIRECTION.md
+DEPLOY.md
+CLAUDE.md
+*.notes.md
+
+# local tooling, caches and design-review data
+.claude/
+.impeccable/
+.playwright-mcp/
+
+# source images and screenshots kept outside the published site
+source-images/
+/screenshots/
+
+# backups
+*.bundle
