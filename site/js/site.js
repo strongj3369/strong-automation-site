@@ -131,6 +131,18 @@
   addEventListener('resize',function(){track();pedges();});track();pedges();
   })();
 
+  /* back to top: shown after the first screen; smooth scroll (instant with reduced motion), then focus
+     moves to the brand link so keyboard users carry on from the top of the page */
+  var toTop=document.querySelector('.totop');
+  if(toTop){
+    var syncTop=function(){toTop.classList.toggle('on',scrollY>innerHeight);};
+    addEventListener('scroll',syncTop,{passive:true});addEventListener('resize',syncTop);syncTop();
+    toTop.addEventListener('click',function(){
+      scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+      var brand=document.querySelector('header .brand');if(brand)brand.focus({preventScroll:true});
+    });
+  }
+
   /* close mobile menu after choosing */
   var mn=document.querySelector('.menu');mn.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mn.open=false;});});
 
