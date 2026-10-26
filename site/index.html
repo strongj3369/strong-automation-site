@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-home>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>/* old one-page product links now live on products.html */if(/^#(strongpantry|celestial-destiny|signal|colortunelyrics|run-offline)$/.test(location.hash))location.replace('products.html'+location.hash)</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data:; style-src 'self'; font-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>The Strong Automation: AI Apps, Tools and Custom Dashboards</title>
 <meta name="description" content="The Strong Automation builds custom AI assistants, dashboards and apps for creators and solo businesses.">
 <link rel="canonical" href="https://thestrongautomation.com/">
@@ -26,19 +27,13 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://thestrongautomation.com/#org","name":"The Strong Automation","url":"https://thestrongautomation.com/","logo":"https://thestrongautomation.com/logo.png","email":"corporate@thestrongautomation.com","description":"Builds custom AI assistants, dashboards and apps for creators and solo businesses.","knowsAbout":["AI agents","MCP servers","Full-stack AI applications","Custom dashboards"]},{"@type":"WebSite","@id":"https://thestrongautomation.com/#website","name":"The Strong Automation","url":"https://thestrongautomation.com/","publisher":{"@id":"https://thestrongautomation.com/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does a custom project cost?","acceptedAnswer":{"@type":"Answer","text":"Every project is quoted after a short call, based on what you need."}},{"@type":"Question","name":"How long does a dashboard take?","acceptedAnswer":{"@type":"Answer","text":"Most dashboards are ready in 1-3 weeks."}},{"@type":"Question","name":"Do you offer support after launch?","acceptedAnswer":{"@type":"Answer","text":"Yes, we stay on for fixes and changes."}},{"@type":"Question","name":"Can you work with the tools I already use?","acceptedAnswer":{"@type":"Answer","text":"Usually, yes. We connect to your existing apps and data."}},{"@type":"Question","name":"Can you build a dashboard for my business?","acceptedAnswer":{"@type":"Answer","text":"Yes. Email us what you track and which tools you use, and we'll reply with what we can build."}}]}]}</script>
 <link rel="icon" type="image/png" sizes="48x48" href="img/brand/favicon-48.png">
 <link rel="apple-touch-icon" href="img/brand/apple-touch-icon.png">
-<script>/* the rise starting state only exists when the reveal can run */if('IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rise')</script>
+<script src="js/head.js"></script>
 <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-pantry" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16v11H4zM6 9V5h12v4M9 13h6"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 6.9L20 7l-5 4.9L19 18l-7-3.2L5 18l4-6.1L4 7l6.4 1.9z"/></symbol>
-  <symbol id="i-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5h14v14H5zM8 9h8M8 12h8M8 15h5"/></symbol>
-  <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
-  <symbol id="i-paw" viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="9" r="2"/><circle cx="12" cy="6.5" r="2"/><circle cx="17" cy="9" r="2"/><path d="M12 11.5c-3 0-5.5 3.3-5.5 5.5 0 1.6 1.3 2.5 2.8 2.5 1.1 0 1.7-.6 2.7-.6s1.6.6 2.7.6c1.5 0 2.8-.9 2.8-2.5 0-2.2-2.5-5.5-5.5-5.5z"/></symbol>
+<svg class="sprite" width="0" height="0" aria-hidden="true">
   <symbol id="i-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></symbol>
-  <symbol id="i-out" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11L11 5M6 5h5v5"/></symbol>
   <symbol id="i-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-6.5"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></symbol>
   <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
