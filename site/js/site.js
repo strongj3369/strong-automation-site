@@ -109,6 +109,20 @@
     document.querySelectorAll('.prod .slides').forEach(function(el){riser.observe(el);});
   }
 
+  /* homepage: each .rv part fades up once its top enters the screen (anything already passed shows at once);
+     checked on scroll and resize, so nothing can stay hidden; html.rise is only set when this can run */
+  var rvs=[].slice.call(document.querySelectorAll('.rv'));
+  if(rvs.length&&document.documentElement.classList.contains('rise'))(function(){
+    var queued=false;
+    function check(){
+      queued=false;var line=innerHeight*.94;
+      rvs=rvs.filter(function(el){if(el.getBoundingClientRect().top<line){el.classList.add('on');return false;}return true;});
+      if(!rvs.length){removeEventListener('scroll',later);removeEventListener('resize',later);}
+    }
+    function later(){if(!queued){queued=true;requestAnimationFrame(check);}}
+    addEventListener('scroll',later,{passive:true});addEventListener('resize',later);check();
+  })();
+
   /* sticky product bar (products page): shown from the end of the page intro to the end of the last product;
      the product crossing 40% of the viewport is marked current and kept in view on narrow rails */
   var pbar=document.querySelector('.pbar');

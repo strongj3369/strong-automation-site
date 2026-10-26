@@ -11,6 +11,7 @@ CLAUDE.md
 .claude/
 .impeccable/
 .playwright-mcp/
+.taste-skill/
 
 # source images and screenshots kept outside the published site
 source-images/
