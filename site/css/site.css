@@ -254,6 +254,18 @@ header{position:relative;z-index:20;padding-top:calc(12px + env(safe-area-inset-
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 26px;padding:0;list-style:none}
 .chips li{font-size:13.5px;padding:7px 13px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
 
+/* products page intro row (above the product list): eyebrow + heading on 1-6, the line and button on 7-12 */
+.pintro .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col-gap);row-gap:24px;align-items:end;padding-block:clamp(24px,4vw,48px) clamp(64px,8vw,104px)}
+.pintro-head{grid-column:1/7;display:grid;gap:12px}
+.pintro .eyebrow{margin:0;font-size:15px;font-weight:600;color:var(--accent-deep)}
+.pintro h2{font-size:var(--fs-h2);font-weight:600;line-height:1.04;letter-spacing:-.035em;max-width:14ch}
+.pintro-body{grid-column:7/13;display:grid;justify-items:start;gap:22px}
+.pintro-body p{margin:0;font-size:var(--fs-lead);line-height:1.55;color:var(--ink-2);max-width:44ch}
+@media (max-width:920px){.pintro-head,.pintro-body{grid-column:1/-1}}
+.pintro + .prod .wrap{border-top:1px solid var(--line)}
+/* under each product: a small neutral tag, so it never competes with the buy button */
+.ptag{margin:4px 0 0;display:inline-flex;align-items:center;padding:6px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13.5px;color:var(--ink-2)}
+
 /* products page intro (also where the sticky product bar starts) and closing call to action */
 .phead .wrap{padding-block:72px 96px;display:grid;justify-items:center;text-align:center}
 .phead h1{font-size:var(--fs-h2);line-height:1.04;letter-spacing:-.035em;font-weight:600;margin:0}
