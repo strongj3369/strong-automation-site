@@ -103,8 +103,8 @@ header .wrap{position:relative}
 .hero::before{content:"";position:absolute;inset:-120px 0 0;z-index:-1;pointer-events:none;
   background:radial-gradient(55% 60% at 50% 30%,rgba(255,255,255,.95),transparent 70%)}
 .hero .wrap{padding-block:80px clamp(72px,8vw,112px);text-align:center;display:grid;justify-items:center}
-.hero h1{font-size:var(--fs-hero);line-height:.98;letter-spacing:-.04em;font-weight:600;margin-top:22px;max-width:14ch}
-.hero h1 em{font-style:normal;color:var(--accent-deep)}
+.hero h1{font-size:var(--fs-hero);line-height:.98;letter-spacing:-.04em;font-weight:600;margin-top:22px;max-width:17ch}
+.hero h1 em{display:block;font-style:normal;color:var(--accent-deep)}
 .hero .lede{font-size:var(--fs-lead);line-height:1.6;color:var(--ink-2);max-width:52ch;margin:28px 0 0}
 .hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:30px}
 
@@ -267,8 +267,9 @@ header .wrap{position:relative}
 @media (hover:hover) and (pointer:fine){.more:hover{text-decoration-color:var(--accent)}.more:hover svg{transform:translateX(2px)}}
 
 /* what we do: three linked offer cards on columns 1-4, 5-8, 9-12 */
-.offers{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--col-gap);margin:0;padding:0;list-style:none}
-@media (max-width:860px){.offers{grid-template-columns:minmax(0,1fr)}}
+.offers{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--col-gap);margin:0;padding:0;list-style:none}
+@media (max-width:1040px){.offers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.offers{grid-template-columns:minmax(0,1fr)}}
 /* the icon sits in flow inside the heading, with no tile of its own */
 .offer{height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:14px;padding:28px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-sm);transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .2s ease-out}
 .offer:active{transform:scale(.98)}
@@ -278,6 +279,17 @@ header .wrap{position:relative}
 .offer .oi{flex:none;width:22px;height:22px;color:var(--accent-deep)}
 .offer p{align-self:start;margin:0;color:var(--ink-2);font-size:16px;line-height:1.65}
 .offer .more{margin-top:6px;text-decoration:none}
+/* "Works with" strip: official brand marks, one ink color, matched by optical height */
+.works{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:18px 40px;margin-top:clamp(40px,5vw,56px)}
+.works h3{font-size:14px;font-weight:500;letter-spacing:0;color:var(--muted)}
+.logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:20px clamp(28px,4vw,48px);margin:0;padding:0;list-style:none;color:var(--ink)}
+.logos{--lg:1}
+.logos svg{display:block;width:auto;height:calc(24px*var(--lg))}
+.logos .lg-stripe{height:calc(30px*var(--lg))}
+.logos .lg-cal{height:calc(20px*var(--lg))}
+.logos .lg-mark{height:calc(26px*var(--lg))}
+.logos .lg-vapi{height:calc(25px*var(--lg))}
+@media (max-width:480px){.logos{--lg:.8;column-gap:22px}}
 
 /* how custom projects work: an ordered list of three steps */
 .steps{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--col-gap);margin:0;padding:0;list-style:none;counter-reset:step}
