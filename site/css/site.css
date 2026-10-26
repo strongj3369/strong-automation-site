@@ -246,12 +246,19 @@ header .wrap{position:relative}
 .dpanel{grid-column:1/-1;border-radius:28px;background:var(--surface);padding:clamp(40px,5vw,72px) 24px;display:grid;grid-template-columns:subgrid;row-gap:36px;align-items:center}
 .dhead{grid-column:2/12}
 .dbody{grid-column:2/7}
-.dpanel .slides{grid-column:7/12}
+.dpanel .dshow{grid-column:7/12;display:grid;gap:18px;min-width:0}
+.slides[hidden]{display:none}
+/* dashboard switcher: one segmented pill above the slideshow */
+.dswitch{justify-self:center;display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--bg);border:1px solid var(--line);max-width:100%}
+.dswitch button{height:34px;padding:0 14px;border:0;border-radius:999px;background:none;color:var(--muted);font:500 13.5px var(--f-sans);white-space:nowrap;cursor:pointer;transition:color .15s ease-out,background-color .15s ease-out,box-shadow .15s ease-out}
+@media (hover:hover) and (pointer:fine){.dswitch button:hover{color:var(--ink)}}
+.dswitch button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm),0 0 0 1px var(--line)}
+@media (max-width:560px){.dswitch button{height:40px;padding:0 12px}}
 .dpanel .snote{margin:0;max-width:none;text-align:center;font-size:13px;line-height:1.4;color:var(--muted)}
 /* five tabs plus the pause button fit the 5-column slideshow without scrolling at desktop */
 .dpanel .tabs button{padding:0 8px}
 .dpanel .tabbar{gap:6px}
-@media (max-width:920px){.dpanel{grid-template-columns:minmax(0,1fr);padding:clamp(28px,5vw,48px)}.dhead,.dbody,.dpanel .slides{grid-column:1/-1}}
+@media (max-width:920px){.dpanel{grid-template-columns:minmax(0,1fr);padding:clamp(28px,5vw,48px)}.dhead,.dbody,.dpanel .dshow{grid-column:1/-1}}
 .dpanel h2{margin:0}
 .dpanel h2 em{font-style:normal;color:var(--accent-deep)}
 .dpanel p{font-size:var(--fs-body);line-height:1.7;color:var(--ink-2);margin:0;max-width:46ch}

@@ -14,6 +14,8 @@ CLAUDE.md
 
 # source images and screenshots kept outside the published site
 source-images/
+# sample dashboards; only their screenshots (site/img/dashboards/) are published
+dashboards-src/
 /screenshots/
 
 # backups
