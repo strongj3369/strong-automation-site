@@ -130,9 +130,6 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 24px;
 }
-html:has(.pbar) {
-  scroll-padding-top: 88px;
-}
 body {
   margin: 0;
   background: var(--bg);
@@ -142,15 +139,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-/* keeps content from showing under a phone's status bar (the page uses viewport-fit=cover) */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0 0 auto;
-  height: env(safe-area-inset-top, 0px);
-  z-index: 30;
-  background: var(--bg);
 }
 a {
   color: inherit;
@@ -528,19 +516,16 @@ header {
 .tabs::-webkit-scrollbar {
   display: none;
 }
-/* whichever edge of a sideways-scrolling row hides more items fades out (masks use alpha only) */
-.tabs.fade-r,
-.prail.fade-r {
+/* whichever edge of the sideways-scrolling tab row hides more tabs fades out (masks use alpha only) */
+.tabs.fade-r {
   -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
   mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
 }
-.tabs.fade-l,
-.prail.fade-l {
+.tabs.fade-l {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px);
   mask-image: linear-gradient(90deg, transparent, #000 28px);
 }
-.tabs.fade-l.fade-r,
-.prail.fade-l.fade-r {
+.tabs.fade-l.fade-r {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
   mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
 }
@@ -764,7 +749,7 @@ footer ul a:hover {
 }
 
 /* ===== page: products ===== */
-/* intro: centered heading, lede and the lineup tiles as an in-page menu (also where the sticky product bar starts) */
+/* intro: centered heading, lede and the lineup tiles as an in-page menu */
 .phead .wrap {
   padding-block: 72px 96px;
   display: grid;
@@ -925,88 +910,6 @@ footer ul a:hover {
 .i-groom {
   background: linear-gradient(145deg, var(--white), var(--line-2));
   color: var(--ink);
-}
-/* sticky product bar: pinned to the top of the screen between the page intro and the last product */
-.pbar {
-  position: fixed;
-  z-index: 20;
-  left: 50%;
-  top: calc(env(safe-area-inset-top, 0px) + 12px);
-  max-width: calc(100% - 2 * var(--gutter));
-  padding: 4px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, -6px);
-  transition:
-    opacity 0.2s ease-out,
-    transform 0.2s var(--ease),
-    visibility 0s linear 0.2s;
-}
-.pbar.on {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, 0);
-  transition:
-    opacity 0.2s ease-out,
-    transform 0.2s var(--ease);
-}
-@media (max-width: 480px) {
-  .pbar {
-    max-width: calc(100% - 2 * var(--gutter-sm));
-  }
-}
-.prail {
-  position: relative;
-  display: flex;
-  gap: 2px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  border-radius: var(--r-pill);
-}
-.prail::-webkit-scrollbar {
-  display: none;
-}
-.prail a {
-  flex: none;
-  white-space: nowrap;
-  height: 32px;
-  padding: 0 14px;
-  border-radius: var(--r-pill);
-  display: flex;
-  align-items: center;
-  font-size: var(--fs-caption);
-  font-weight: 500;
-  color: var(--muted);
-  transition:
-    color var(--t-fast),
-    background var(--t-fast),
-    box-shadow var(--t-fast);
-}
-@media (hover: hover) and (pointer: fine) {
-  .prail a:hover {
-    color: var(--ink);
-  }
-}
-.prail a[aria-current='true'] {
-  color: var(--ink);
-  background: var(--surface);
-  box-shadow:
-    0 0 0 1px var(--line),
-    var(--shadow-sm);
-}
-.prail a:focus-visible {
-  outline-offset: -2px;
-}
-@media (max-width: 560px) {
-  .prail a {
-    height: 40px;
-  }
 }
 /* intro row above the product list: eyebrow + heading on 1-6, the line and button on 7-12 */
 .pintro .wrap {

@@ -4,14 +4,14 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rise = document.documentElement.classList.contains('rise');
 
-  /* keep a sideways-scrolling row's chosen item in view without scrolling the page vertically */
+  /* keep a sideways-scrolling tab row's chosen tab in view without scrolling the page vertically */
   function keepInView(rail, item, offset) {
     if (item.offsetLeft < rail.scrollLeft || item.offsetLeft + item.offsetWidth > rail.scrollLeft + rail.clientWidth) {
       rail.scrollTo({ left: item.offsetLeft - offset, behavior: reduce ? 'auto' : 'smooth' });
     }
   }
 
-  /* fade whichever edge of a sideways-scrolling row hides more items */
+  /* fade whichever edge of a sideways-scrolling tab row hides more tabs */
   function fadeEdges(rail) {
     var max = rail.scrollWidth - rail.clientWidth;
     rail.classList.toggle('fade-l', rail.scrollLeft > 2);
@@ -374,54 +374,6 @@
     check();
   }
 
-  /* products page: the sticky bar shows from the end of the intro to the end of the last product; the product
-     crossing 40% of the screen is marked current */
-  function initProductBar(bar) {
-    var rail = bar.querySelector('.prail');
-    var links = [].slice.call(rail.querySelectorAll('a'));
-    var start = document.querySelector('[data-pbar-start]');
-    var products = links.map(function (a) {
-      return document.querySelector(a.getAttribute('href'));
-    });
-    var last = products[products.length - 1];
-    var active = -1;
-
-    function update() {
-      var line = innerHeight * 0.4;
-      bar.classList.toggle(
-        'on',
-        start.getBoundingClientRect().bottom < 80 && last.getBoundingClientRect().bottom > line,
-      );
-      var k = -1;
-      products.forEach(function (section, i) {
-        var r = section.getBoundingClientRect();
-        if (r.top <= line && r.bottom > line) k = i;
-      });
-      if (k === active) return;
-      active = k;
-      links.forEach(function (a, i) {
-        if (i === k) a.setAttribute('aria-current', 'true');
-        else a.removeAttribute('aria-current');
-      });
-      if (k > -1) keepInView(rail, links[k], 24);
-    }
-
-    rail.addEventListener(
-      'scroll',
-      function () {
-        fadeEdges(rail);
-      },
-      { passive: true },
-    );
-    addEventListener('scroll', perFrame(update), { passive: true });
-    addEventListener('resize', function () {
-      update();
-      fadeEdges(rail);
-    });
-    update();
-    fadeEdges(rail);
-  }
-
   /* back to top: shown after the first screen; focus then moves to the brand link so keyboard users carry on from
      the top of the page */
   function initBackToTop(button) {
@@ -473,7 +425,6 @@
   }
 
   var birthForm = document.getElementById('bcForm');
-  var productBar = document.querySelector('.pbar');
   var toTop = document.querySelector('.totop');
   var menu = document.querySelector('.menu');
   var copy = document.getElementById('copy');
@@ -483,7 +434,6 @@
   document.querySelectorAll('[data-slides]').forEach(initSlideshow);
   if (rise) initFrameReveal(document.querySelectorAll('.prod .slides'));
   if (rise && revealParts.length) initScrollReveal(revealParts);
-  if (productBar) initProductBar(productBar);
   if (toTop) initBackToTop(toTop);
   if (menu) initMenu(menu);
   if (copy) initCopyEmail(copy, document.getElementById('addr'));
