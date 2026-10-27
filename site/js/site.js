@@ -1,171 +1,370 @@
-(function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* The Strong Automation: one script for every page, loaded at the end of <body>. Each feature runs only where its
+   markup exists. No globals: everything lives inside this function. */
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rise = document.documentElement.classList.contains('rise');
 
-  /* Celestial Destiny birth card (products page): solar value = 55 - (2 x month + day) */
-  if(document.getElementById('bcForm'))(function(){
-  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var dim=[31,29,31,30,31,30,31,31,30,31,30,31];
-  var ranks=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-  var rankNames=['Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Jack','Queen','King'];
-  /* River=Hearts, Feather=Clubs, Sky=Diamonds, Mountain=Spades */
-  var suits=[['river','Rivers','The Suit of Emotion, Connection & Relationship'],['feather','Feathers','The Suit of Knowledge, News & Communication'],['sky','Sky','The Suit of Value, Worth & Resources'],['mountain','Mountains','The Suit of Labor, Effort & Responsibility']];
-  var mSel=document.getElementById('bcMonth'),dSel=document.getElementById('bcDay');
-  months.forEach(function(m,i){mSel.add(new Option(m,i+1));});
-  function fillDays(){var keep=+dSel.value||1;dSel.innerHTML='';for(var d=1;d<=dim[mSel.value-1];d++)dSel.add(new Option(d,d));dSel.value=Math.min(keep,dim[mSel.value-1]);}
-  mSel.addEventListener('change',function(){fillDays();reveal(true);});
-  dSel.addEventListener('change',function(){reveal(true);});
-  function reveal(anim){
-    var m=+mSel.value,d=+dSel.value,v=55-(2*m+d),c=document.getElementById('bigcard'),rk=document.getElementById('cRank');
-    c.className='bigcard';c.querySelectorAll('.jt').forEach(function(x){x.remove();});
-    if(v===0){
-      document.getElementById('bcName').textContent='The Jester';
-      document.getElementById('bcSuit').textContent='The card outside the suits';
-      c.classList.add('jester');rk.hidden=true;
-      var jt=document.createElement('span');jt.className='jt';jt.innerHTML='<small>THE</small>JESTER';c.appendChild(jt);
-    }else{
-      var s=suits[Math.floor((v-1)/13)],r=(v-1)%13;
-      document.getElementById('bcName').textContent=rankNames[r]+' of '+s[1];
-      document.getElementById('bcSuit').textContent=s[2];
-      c.classList.add('s-'+s[0]);rk.hidden=false;rk.textContent=ranks[r];
+  /* keep a sideways-scrolling row's chosen item in view without scrolling the page vertically */
+  function keepInView(rail, item, offset) {
+    if (item.offsetLeft < rail.scrollLeft || item.offsetLeft + item.offsetWidth > rail.scrollLeft + rail.clientWidth) {
+      rail.scrollTo({ left: item.offsetLeft - offset, behavior: reduce ? 'auto' : 'smooth' });
     }
-    document.getElementById('bcNote').textContent='Birthday: '+months[m-1]+' '+d;
-    if(anim&&!reduce){void c.offsetWidth;c.classList.add('flipping');}
   }
-  mSel.value=3;fillDays();dSel.value=20;reveal(false);
-  document.getElementById('bcForm').addEventListener('submit',function(e){e.preventDefault();reveal(true);});
-  })();
 
-  /* product slideshows: auto-advance every 5s while on screen; pause on hover or focus;
-     any tab pick, swipe, click or tap inside a slide stops auto-play for good, so the
-     Celestial Destiny form can never be pulled away mid-use; no auto-play for reduced motion */
-  [].forEach.call(document.querySelectorAll('[data-slides]'),function(root){
-    var slides=[].slice.call(root.querySelectorAll('.slide')),tabs=[].slice.call(root.querySelectorAll('.tabs [role=tab]'));
-    var cur=0,timer=0,hover=false,focus=false,visible=false,stopped=reduce;
-    function show(n,moveFocus){
-      n=(n+slides.length)%slides.length;
-      slides.forEach(function(s,j){var on=j===n;s.classList.toggle('on',on);s.inert=!on;s.setAttribute('aria-hidden',!on);});
-      tabs.forEach(function(t,j){var on=j===n;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;});
-      cur=n;if(moveFocus)tabs[n].focus();ink();
-      /* keep the selected tab visible when the tab row scrolls sideways (no vertical page scroll) */
-      var t=tabs[n],rail=t.parentNode;
-      if(t.offsetLeft<rail.scrollLeft||t.offsetLeft+t.offsetWidth>rail.scrollLeft+rail.clientWidth)rail.scrollTo({left:t.offsetLeft-8,behavior:reduce?'auto':'smooth'});
+  /* fade whichever edge of a sideways-scrolling row hides more items */
+  function fadeEdges(rail) {
+    var max = rail.scrollWidth - rail.clientWidth;
+    rail.classList.toggle('fade-l', rail.scrollLeft > 2);
+    rail.classList.toggle('fade-r', rail.scrollLeft < max - 2);
+  }
+
+  /* run fn at most once per frame */
+  function perFrame(fn) {
+    var queued = false;
+    return function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; fn(); });
+    };
+  }
+
+  /* Celestial Destiny birth card (products page): solar value = 55 - (2 x month + day); 0 is the Jester */
+  function initBirthCard(form) {
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var daysIn = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    var rankNames = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'];
+    /* River = Hearts, Feather = Clubs, Sky = Diamonds, Mountain = Spades */
+    var suits = [
+      ['river', 'Rivers', 'The Suit of Emotion, Connection & Relationship'],
+      ['feather', 'Feathers', 'The Suit of Knowledge, News & Communication'],
+      ['sky', 'Sky', 'The Suit of Value, Worth & Resources'],
+      ['mountain', 'Mountains', 'The Suit of Labor, Effort & Responsibility']
+    ];
+    var month = document.getElementById('bcMonth');
+    var day = document.getElementById('bcDay');
+    var card = document.getElementById('bigcard');
+    var rank = document.getElementById('cRank');
+
+    function fillDays() {
+      var keep = +day.value || 1;
+      var count = daysIn[month.value - 1];
+      day.textContent = '';
+      for (var d = 1; d <= count; d++) day.add(new Option(d, d));
+      day.value = Math.min(keep, count);
     }
-    function schedule(){
+
+    function jesterLabel() {
+      var label = document.createElement('span');
+      var small = document.createElement('small');
+      label.className = 'jt';
+      small.textContent = 'THE';
+      label.append(small, 'JESTER');
+      return label;
+    }
+
+    function reveal(animate) {
+      var m = +month.value;
+      var d = +day.value;
+      var value = 55 - (2 * m + d);
+      card.className = 'bigcard';
+      card.querySelectorAll('.jt').forEach(function (el) { el.remove(); });
+      if (value === 0) {
+        document.getElementById('bcName').textContent = 'The Jester';
+        document.getElementById('bcSuit').textContent = 'The card outside the suits';
+        card.classList.add('jester');
+        rank.hidden = true;
+        card.appendChild(jesterLabel());
+      } else {
+        var suit = suits[Math.floor((value - 1) / 13)];
+        var r = (value - 1) % 13;
+        document.getElementById('bcName').textContent = rankNames[r] + ' of ' + suit[1];
+        document.getElementById('bcSuit').textContent = suit[2];
+        card.classList.add('s-' + suit[0]);
+        rank.hidden = false;
+        rank.textContent = ranks[r];
+      }
+      document.getElementById('bcNote').textContent = 'Birthday: ' + months[m - 1] + ' ' + d;
+      if (animate && !reduce) {
+        void card.offsetWidth; /* restart the flip animation */
+        card.classList.add('flipping');
+      }
+    }
+
+    months.forEach(function (name, i) { month.add(new Option(name, i + 1)); });
+    month.addEventListener('change', function () { fillDays(); reveal(true); });
+    day.addEventListener('change', function () { reveal(true); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); reveal(true); });
+    month.value = 3;
+    fillDays();
+    day.value = 20;
+    reveal(false);
+  }
+
+  /* screenshot slideshows: auto-advance every 5s while at least 40% on screen; pause on hover or focus. Any tab
+     pick, swipe, tap or form change inside a slide stops auto-play for good, so the Celestial Destiny form is never
+     pulled away mid-use. No auto-play with reduced motion. */
+  function initSlideshow(root) {
+    var slides = [].slice.call(root.querySelectorAll('.slide'));
+    var tabs = [].slice.call(root.querySelectorAll('.tabs [role=tab]'));
+    var tabRow = root.querySelector('.tabs');
+    var track = root.querySelector('.track');
+    var current = 0;
+    var timer = 0;
+    var hover = false;
+    var focus = false;
+    var visible = false;
+    var stopped = reduce;
+
+    var bar = document.createElement('div');
+    var toggle = document.createElement('button');
+    var underline = document.createElement('span');
+    bar.className = 'tabbar';
+    toggle.type = 'button';
+    toggle.className = 'sp-toggle';
+    toggle.innerHTML = '<svg class="i-pause" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z"/></svg>' +
+      '<svg class="i-play" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.3l7.5 4.7L3 10.7z"/></svg>';
+    underline.className = 'ink';
+    underline.setAttribute('aria-hidden', 'true');
+    tabRow.parentNode.insertBefore(bar, tabRow);
+    bar.appendChild(tabRow);
+    bar.appendChild(toggle);
+    tabRow.appendChild(underline);
+
+    function placeUnderline() {
+      var tab = tabs[current];
+      underline.style.transform = 'translateX(' + tab.offsetLeft + 'px) scaleX(' + tab.offsetWidth / 100 + ')';
+    }
+
+    function show(n, moveFocus) {
+      n = (n + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        var on = i === n;
+        slide.classList.toggle('on', on);
+        slide.inert = !on;
+        slide.setAttribute('aria-hidden', !on);
+      });
+      tabs.forEach(function (tab, i) {
+        var on = i === n;
+        tab.setAttribute('aria-selected', on);
+        tab.tabIndex = on ? 0 : -1;
+      });
+      current = n;
+      if (moveFocus) tabs[n].focus();
+      placeUnderline();
+      keepInView(tabRow, tabs[n], 8);
+    }
+
+    function syncToggle() {
+      toggle.classList.toggle('paused', stopped);
+      toggle.setAttribute('aria-label', (stopped ? 'Play' : 'Pause') + ' slideshow');
+    }
+
+    function schedule() {
       clearTimeout(timer);
-      if(!stopped&&!hover&&!focus&&visible&&!document.hidden)timer=setTimeout(function(){show(cur+1);schedule();},5000);
+      if (!stopped && !hover && !focus && visible && !document.hidden) {
+        timer = setTimeout(function () { show(current + 1); schedule(); }, 5000);
+      }
     }
-    function stop(){stopped=true;clearTimeout(timer);sync();}
-    function pick(n,moveFocus){stop();show(n,moveFocus);}
-    /* pause/play button beside the tabs; an explicit Play overrides the hover pause until the pointer leaves */
-    var tabsEl=root.querySelector('.tabs'),bar=document.createElement('div'),btn=document.createElement('button');
-    bar.className='tabbar';btn.type='button';btn.className='sp-toggle';
-    btn.innerHTML='<svg class="i-pause" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z"/></svg><svg class="i-play" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.3l7.5 4.7L3 10.7z"/></svg>';
-    tabsEl.parentNode.insertBefore(bar,tabsEl);bar.appendChild(tabsEl);bar.appendChild(btn);
-    /* sliding underline under the selected tab: placed instantly first, animated from then on */
-    var bar2=document.createElement('span');bar2.className='ink';bar2.setAttribute('aria-hidden','true');tabsEl.appendChild(bar2);
-    function ink(){var t=tabs[cur];bar2.style.transform='translateX('+t.offsetLeft+'px) scaleX('+(t.offsetWidth/100)+')';}
-    function sync(){btn.classList.toggle('paused',stopped);btn.setAttribute('aria-label',(stopped?'Play':'Pause')+' slideshow');}
-    btn.addEventListener('click',function(){
-      if(stopped){stopped=false;hover=false;focus=false;show(cur+1);sync();schedule();}else stop();
+
+    function stop() {
+      stopped = true;
+      clearTimeout(timer);
+      syncToggle();
+    }
+
+    function pick(n, moveFocus) {
+      stop();
+      show(n, moveFocus);
+    }
+
+    /* an explicit Play overrides the hover and focus pause until the pointer or focus leaves */
+    toggle.addEventListener('click', function () {
+      if (!stopped) return stop();
+      stopped = false;
+      hover = false;
+      focus = false;
+      show(current + 1);
+      syncToggle();
+      schedule();
     });
-    tabs.forEach(function(t,j){
-      t.addEventListener('click',function(){pick(j);});
-      t.addEventListener('keydown',function(e){
-        var n={ArrowRight:j+1,ArrowLeft:j-1,Home:0,End:tabs.length-1}[e.key];
-        if(n===undefined)return;
-        e.preventDefault();pick(n,true);
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { pick(i); });
+      tab.addEventListener('keydown', function (e) {
+        var n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (n === undefined) return;
+        e.preventDefault();
+        pick(n, true);
       });
     });
-    root.addEventListener('mouseenter',function(){hover=true;schedule();});
-    root.addEventListener('mouseleave',function(){hover=false;schedule();});
-    root.addEventListener('focusin',function(e){focus=e.target!==btn;schedule();});
-    root.addEventListener('focusout',function(e){if(!root.contains(e.relatedTarget)){focus=false;schedule();}});
-    document.addEventListener('visibilitychange',schedule);
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(function(es){visible=es[0].isIntersecting;schedule();},{threshold:.4}).observe(root);
-    }else{visible=true;}
-    var track=root.querySelector('.track'),x0=null,y0=0;
-    ['pointerdown','keydown','change'].forEach(function(ev){track.addEventListener(ev,stop);});
-    track.addEventListener('touchstart',function(e){
-      if(e.touches.length>1||e.target.closest('select,input,button,a')){x0=null;return;}
-      x0=e.touches[0].clientX;y0=e.touches[0].clientY;
-    },{passive:true});
-    track.addEventListener('touchend',function(e){
-      if(x0===null)return;
-      var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;
-      if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.5)pick(cur+(dx<0?1:-1));
-    },{passive:true});
-    /* fade whichever edge of the tab row hides more tabs */
-    function edges(){var m=tabsEl.scrollWidth-tabsEl.clientWidth;tabsEl.classList.toggle('fade-l',tabsEl.scrollLeft>2);tabsEl.classList.toggle('fade-r',tabsEl.scrollLeft<m-2);}
-    tabsEl.addEventListener('scroll',edges,{passive:true});addEventListener('resize',function(){edges();ink();});
-    if(document.fonts)document.fonts.ready.then(function(){ink();edges();});
-    show(0);sync();edges();schedule();
-    requestAnimationFrame(function(){requestAnimationFrame(function(){bar2.classList.add('ready');});});
-  });
 
-  /* signature moment: reveal each product frame once when a fifth of it is on screen */
-  if(document.documentElement.classList.contains('rise')){
-    var riser=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('risen');riser.unobserve(e.target);}});},{threshold:.2,rootMargin:'0px 0px -8% 0px'});
-    document.querySelectorAll('.prod .slides').forEach(function(el){riser.observe(el);});
-  }
-
-  /* homepage: each .rv part fades up once its top enters the screen (anything already passed shows at once);
-     checked on scroll and resize, so nothing can stay hidden; html.rise is only set when this can run */
-  var rvs=[].slice.call(document.querySelectorAll('.rv'));
-  if(rvs.length&&document.documentElement.classList.contains('rise'))(function(){
-    var queued=false;
-    function check(){
-      queued=false;var line=innerHeight*.94;
-      rvs=rvs.filter(function(el){if(el.getBoundingClientRect().top<line){el.classList.add('on');return false;}return true;});
-      if(!rvs.length){removeEventListener('scroll',later);removeEventListener('resize',later);}
+    root.addEventListener('mouseenter', function () { hover = true; schedule(); });
+    root.addEventListener('mouseleave', function () { hover = false; schedule(); });
+    root.addEventListener('focusin', function (e) { focus = e.target !== toggle; schedule(); });
+    root.addEventListener('focusout', function (e) {
+      if (!root.contains(e.relatedTarget)) { focus = false; schedule(); }
+    });
+    document.addEventListener('visibilitychange', schedule);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        schedule();
+      }, { threshold: 0.4 }).observe(root);
+    } else {
+      visible = true;
     }
-    function later(){if(!queued){queued=true;requestAnimationFrame(check);}}
-    addEventListener('scroll',later,{passive:true});addEventListener('resize',later);check();
-  })();
 
-  /* sticky product bar (products page): shown from the end of the page intro to the end of the last product;
-     the product crossing 40% of the viewport is marked current and kept in view on narrow rails */
-  var pbar=document.querySelector('.pbar');
-  if(pbar)(function(){
-  var prail=pbar.querySelector('.prail'),plinks=[].slice.call(prail.querySelectorAll('a'));
-  var start=document.querySelector('[data-pbar-start]'),prods=plinks.map(function(a){return document.querySelector(a.getAttribute('href'));});
-  var last=prods[prods.length-1],ticking=false,curP=-1;
-  function pedges(){var m=prail.scrollWidth-prail.clientWidth;prail.classList.toggle('fade-l',prail.scrollLeft>2);prail.classList.toggle('fade-r',prail.scrollLeft<m-2);}
-  function track(){
-    ticking=false;
-    var line=innerHeight*.4,on=start.getBoundingClientRect().bottom<80&&last.getBoundingClientRect().bottom>line;
-    pbar.classList.toggle('on',on);
-    var k=-1;prods.forEach(function(s,i){var r=s.getBoundingClientRect();if(r.top<=line&&r.bottom>line)k=i;});
-    if(k===curP)return;curP=k;
-    plinks.forEach(function(a,i){if(i===k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});
-    if(k>-1){var a=plinks[k];if(a.offsetLeft<prail.scrollLeft||a.offsetLeft+a.offsetWidth>prail.scrollLeft+prail.clientWidth)prail.scrollTo({left:a.offsetLeft-24,behavior:reduce?'auto':'smooth'});}
-  }
-  prail.addEventListener('scroll',pedges,{passive:true});
-  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(track);}},{passive:true});
-  addEventListener('resize',function(){track();pedges();});track();pedges();
-  })();
+    /* swipe sideways to change slides; touches on form controls and links are left alone */
+    var startX = null;
+    var startY = 0;
+    ['pointerdown', 'keydown', 'change'].forEach(function (type) { track.addEventListener(type, stop); });
+    track.addEventListener('touchstart', function (e) {
+      if (e.touches.length > 1 || e.target.closest('select,input,button,a')) { startX = null; return; }
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      startX = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) pick(current + (dx < 0 ? 1 : -1));
+    }, { passive: true });
 
-  /* back to top: shown after the first screen; smooth scroll (instant with reduced motion), then focus
-     moves to the brand link so keyboard users carry on from the top of the page */
-  var toTop=document.querySelector('.totop');
-  if(toTop){
-    var syncTop=function(){toTop.classList.toggle('on',scrollY>innerHeight);};
-    addEventListener('scroll',syncTop,{passive:true});addEventListener('resize',syncTop);syncTop();
-    toTop.addEventListener('click',function(){
-      scrollTo({top:0,behavior:reduce?'auto':'smooth'});
-      var brand=document.querySelector('header .brand');if(brand)brand.focus({preventScroll:true});
+    tabRow.addEventListener('scroll', function () { fadeEdges(tabRow); }, { passive: true });
+    addEventListener('resize', function () { fadeEdges(tabRow); placeUnderline(); });
+    if (document.fonts) document.fonts.ready.then(function () { placeUnderline(); fadeEdges(tabRow); });
+    show(0);
+    syncToggle();
+    fadeEdges(tabRow);
+    schedule();
+    /* the underline is placed instantly first and animated only from the next change on */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { underline.classList.add('ready'); });
     });
   }
 
-  /* close mobile menu after choosing */
-  var mn=document.querySelector('.menu');mn.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mn.open=false;});});
+  /* products page: each product's frame rises into place once, when a fifth of it is on screen */
+  function initFrameReveal(frames) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('risen');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    frames.forEach(function (el) { observer.observe(el); });
+  }
 
-  /* copy email (homepage contact) */
-  var copyBtn=document.getElementById('copy');
-  if(copyBtn)copyBtn.addEventListener('click',function(){
-    var b=this,el=document.getElementById('addr');
-    function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)}
-    function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Press Ctrl+C'}
-    try{navigator.clipboard.writeText(el.textContent).then(done,fallback)}catch(e){fallback()}
-  });
+  /* homepage: each part fades up once its top enters the screen, and anything already scrolled past shows at once.
+     Checked on scroll and resize rather than with an observer, so nothing can ever stay hidden. */
+  function initScrollReveal(parts) {
+    var waiting = [].slice.call(parts);
+    var check = perFrame(function () {
+      var line = innerHeight * 0.94;
+      waiting = waiting.filter(function (el) {
+        if (el.getBoundingClientRect().top >= line) return true;
+        el.classList.add('on');
+        return false;
+      });
+      if (!waiting.length) {
+        removeEventListener('scroll', check);
+        removeEventListener('resize', check);
+      }
+    });
+    addEventListener('scroll', check, { passive: true });
+    addEventListener('resize', check);
+    check();
+  }
+
+  /* products page: the sticky bar shows from the end of the intro to the end of the last product; the product
+     crossing 40% of the screen is marked current */
+  function initProductBar(bar) {
+    var rail = bar.querySelector('.prail');
+    var links = [].slice.call(rail.querySelectorAll('a'));
+    var start = document.querySelector('[data-pbar-start]');
+    var products = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+    var last = products[products.length - 1];
+    var active = -1;
+
+    function update() {
+      var line = innerHeight * 0.4;
+      bar.classList.toggle('on', start.getBoundingClientRect().bottom < 80 && last.getBoundingClientRect().bottom > line);
+      var k = -1;
+      products.forEach(function (section, i) {
+        var r = section.getBoundingClientRect();
+        if (r.top <= line && r.bottom > line) k = i;
+      });
+      if (k === active) return;
+      active = k;
+      links.forEach(function (a, i) {
+        if (i === k) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+      if (k > -1) keepInView(rail, links[k], 24);
+    }
+
+    rail.addEventListener('scroll', function () { fadeEdges(rail); }, { passive: true });
+    addEventListener('scroll', perFrame(update), { passive: true });
+    addEventListener('resize', function () { update(); fadeEdges(rail); });
+    update();
+    fadeEdges(rail);
+  }
+
+  /* back to top: shown after the first screen; focus then moves to the brand link so keyboard users carry on from
+     the top of the page */
+  function initBackToTop(button) {
+    function sync() { button.classList.toggle('on', scrollY > innerHeight); }
+    addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync);
+    sync();
+    button.addEventListener('click', function () {
+      scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      var brand = document.querySelector('header .brand');
+      if (brand) brand.focus({ preventScroll: true });
+    });
+  }
+
+  /* the mobile menu is a <details>; close it once a link is chosen */
+  function initMenu(menu) {
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { menu.open = false; });
+    });
+  }
+
+  /* homepage contact: copy the address; if the clipboard is blocked, select it so it can be copied by hand */
+  function initCopyEmail(button, address) {
+    function done() {
+      button.textContent = 'Copied';
+      setTimeout(function () { button.textContent = 'Copy'; }, 1600);
+    }
+    function selectInstead() {
+      var range = document.createRange();
+      var selection = getSelection();
+      range.selectNodeContents(address);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      button.textContent = 'Press Ctrl+C';
+    }
+    button.addEventListener('click', function () {
+      try { navigator.clipboard.writeText(address.textContent).then(done, selectInstead); } catch (e) { selectInstead(); }
+    });
+  }
+
+  var birthForm = document.getElementById('bcForm');
+  var productBar = document.querySelector('.pbar');
+  var toTop = document.querySelector('.totop');
+  var menu = document.querySelector('.menu');
+  var copy = document.getElementById('copy');
+  var revealParts = document.querySelectorAll('.rv');
+
+  if (birthForm) initBirthCard(birthForm);
+  document.querySelectorAll('[data-slides]').forEach(initSlideshow);
+  if (rise) initFrameReveal(document.querySelectorAll('.prod .slides'));
+  if (rise && revealParts.length) initScrollReveal(revealParts);
+  if (productBar) initProductBar(productBar);
+  if (toTop) initBackToTop(toTop);
+  if (menu) initMenu(menu);
+  if (copy) initCopyEmail(copy, document.getElementById('addr'));
 })();
