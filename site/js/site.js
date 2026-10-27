@@ -29,7 +29,7 @@
       c.classList.add('s-'+s[0]);rk.hidden=false;rk.textContent=ranks[r];
     }
     document.getElementById('bcNote').textContent='Birthday: '+months[m-1]+' '+d;
-    if(anim&&!reduce){void c.offsetWidth;c.classList.add('flip');}
+    if(anim&&!reduce){void c.offsetWidth;c.classList.add('flipping');}
   }
   mSel.value=3;fillDays();dSel.value=20;reveal(false);
   document.getElementById('bcForm').addEventListener('submit',function(e){e.preventDefault();reveal(true);});
@@ -100,7 +100,7 @@
     tabsEl.addEventListener('scroll',edges,{passive:true});addEventListener('resize',function(){edges();ink();});
     if(document.fonts)document.fonts.ready.then(function(){ink();edges();});
     show(0);sync();edges();schedule();
-    requestAnimationFrame(function(){requestAnimationFrame(function(){bar2.classList.add('go');});});
+    requestAnimationFrame(function(){requestAnimationFrame(function(){bar2.classList.add('ready');});});
   });
 
   /* signature moment: reveal each product frame once when a fifth of it is on screen */
