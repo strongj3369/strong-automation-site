@@ -6,9 +6,11 @@
 
   /* old homepage links: the products moved to products.html (where these hashes are real anchors), and the
      dashboards to dashboards.html */
-  if (home && /^#(strongpantry|celestial-destiny|signal|colortunelyrics|run-offline)$/.test(hash)) location.replace('products.html' + hash);
+  if (home && /^#(strongpantry|celestial-destiny|signal|colortunelyrics|run-offline)$/.test(hash))
+    location.replace('products.html' + hash);
   if (home && /^#(dashboards|dash-title)$/.test(hash)) location.replace('dashboards.html');
 
   /* the reveal starting state only exists when the reveal can run */
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('rise');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches)
+    root.classList.add('rise');
 })(document.documentElement);

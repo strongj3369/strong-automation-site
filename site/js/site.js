@@ -24,22 +24,52 @@
     return function () {
       if (queued) return;
       queued = true;
-      requestAnimationFrame(function () { queued = false; fn(); });
+      requestAnimationFrame(function () {
+        queued = false;
+        fn();
+      });
     };
   }
 
   /* Celestial Destiny birth card (products page): solar value = 55 - (2 x month + day); 0 is the Jester */
   function initBirthCard(form) {
-    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
     var daysIn = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    var rankNames = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King'];
+    var rankNames = [
+      'Ace',
+      'Two',
+      'Three',
+      'Four',
+      'Five',
+      'Six',
+      'Seven',
+      'Eight',
+      'Nine',
+      'Ten',
+      'Jack',
+      'Queen',
+      'King',
+    ];
     /* River = Hearts, Feather = Clubs, Sky = Diamonds, Mountain = Spades */
     var suits = [
       ['river', 'Rivers', 'The Suit of Emotion, Connection & Relationship'],
       ['feather', 'Feathers', 'The Suit of Knowledge, News & Communication'],
       ['sky', 'Sky', 'The Suit of Value, Worth & Resources'],
-      ['mountain', 'Mountains', 'The Suit of Labor, Effort & Responsibility']
+      ['mountain', 'Mountains', 'The Suit of Labor, Effort & Responsibility'],
     ];
     var month = document.getElementById('bcMonth');
     var day = document.getElementById('bcDay');
@@ -68,7 +98,9 @@
       var d = +day.value;
       var value = 55 - (2 * m + d);
       card.className = 'bigcard';
-      card.querySelectorAll('.jt').forEach(function (el) { el.remove(); });
+      card.querySelectorAll('.jt').forEach(function (el) {
+        el.remove();
+      });
       if (value === 0) {
         document.getElementById('bcName').textContent = 'The Jester';
         document.getElementById('bcSuit').textContent = 'The card outside the suits';
@@ -91,10 +123,20 @@
       }
     }
 
-    months.forEach(function (name, i) { month.add(new Option(name, i + 1)); });
-    month.addEventListener('change', function () { fillDays(); reveal(true); });
-    day.addEventListener('change', function () { reveal(true); });
-    form.addEventListener('submit', function (e) { e.preventDefault(); reveal(true); });
+    months.forEach(function (name, i) {
+      month.add(new Option(name, i + 1));
+    });
+    month.addEventListener('change', function () {
+      fillDays();
+      reveal(true);
+    });
+    day.addEventListener('change', function () {
+      reveal(true);
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      reveal(true);
+    });
     month.value = 3;
     fillDays();
     day.value = 20;
@@ -122,7 +164,8 @@
     bar.className = 'tabbar';
     toggle.type = 'button';
     toggle.className = 'sp-toggle';
-    toggle.innerHTML = '<svg class="i-pause" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z"/></svg>' +
+    toggle.innerHTML =
+      '<svg class="i-pause" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z"/></svg>' +
       '<svg class="i-play" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.3l7.5 4.7L3 10.7z"/></svg>';
     underline.className = 'ink';
     underline.setAttribute('aria-hidden', 'true');
@@ -163,7 +206,10 @@
     function schedule() {
       clearTimeout(timer);
       if (!stopped && !hover && !focus && visible && !document.hidden) {
-        timer = setTimeout(function () { show(current + 1); schedule(); }, 5000);
+        timer = setTimeout(function () {
+          show(current + 1);
+          schedule();
+        }, 5000);
       }
     }
 
@@ -190,7 +236,9 @@
     });
 
     tabs.forEach(function (tab, i) {
-      tab.addEventListener('click', function () { pick(i); });
+      tab.addEventListener('click', function () {
+        pick(i);
+      });
       tab.addEventListener('keydown', function (e) {
         var n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
         if (n === undefined) return;
@@ -199,18 +247,33 @@
       });
     });
 
-    root.addEventListener('mouseenter', function () { hover = true; schedule(); });
-    root.addEventListener('mouseleave', function () { hover = false; schedule(); });
-    root.addEventListener('focusin', function (e) { focus = e.target !== toggle; schedule(); });
+    root.addEventListener('mouseenter', function () {
+      hover = true;
+      schedule();
+    });
+    root.addEventListener('mouseleave', function () {
+      hover = false;
+      schedule();
+    });
+    root.addEventListener('focusin', function (e) {
+      focus = e.target !== toggle;
+      schedule();
+    });
     root.addEventListener('focusout', function (e) {
-      if (!root.contains(e.relatedTarget)) { focus = false; schedule(); }
+      if (!root.contains(e.relatedTarget)) {
+        focus = false;
+        schedule();
+      }
     });
     document.addEventListener('visibilitychange', schedule);
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        visible = entries[0].isIntersecting;
-        schedule();
-      }, { threshold: 0.4 }).observe(root);
+      new IntersectionObserver(
+        function (entries) {
+          visible = entries[0].isIntersecting;
+          schedule();
+        },
+        { threshold: 0.4 },
+      ).observe(root);
     } else {
       visible = true;
     }
@@ -218,43 +281,76 @@
     /* swipe sideways to change slides; touches on form controls and links are left alone */
     var startX = null;
     var startY = 0;
-    ['pointerdown', 'keydown', 'change'].forEach(function (type) { track.addEventListener(type, stop); });
-    track.addEventListener('touchstart', function (e) {
-      if (e.touches.length > 1 || e.target.closest('select,input,button,a')) { startX = null; return; }
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    }, { passive: true });
-    track.addEventListener('touchend', function (e) {
-      if (startX === null) return;
-      var dx = e.changedTouches[0].clientX - startX;
-      var dy = e.changedTouches[0].clientY - startY;
-      startX = null;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) pick(current + (dx < 0 ? 1 : -1));
-    }, { passive: true });
+    ['pointerdown', 'keydown', 'change'].forEach(function (type) {
+      track.addEventListener(type, stop);
+    });
+    track.addEventListener(
+      'touchstart',
+      function (e) {
+        if (e.touches.length > 1 || e.target.closest('select,input,button,a')) {
+          startX = null;
+          return;
+        }
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      },
+      { passive: true },
+    );
+    track.addEventListener(
+      'touchend',
+      function (e) {
+        if (startX === null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        var dy = e.changedTouches[0].clientY - startY;
+        startX = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) pick(current + (dx < 0 ? 1 : -1));
+      },
+      { passive: true },
+    );
 
-    tabRow.addEventListener('scroll', function () { fadeEdges(tabRow); }, { passive: true });
-    addEventListener('resize', function () { fadeEdges(tabRow); placeUnderline(); });
-    if (document.fonts) document.fonts.ready.then(function () { placeUnderline(); fadeEdges(tabRow); });
+    tabRow.addEventListener(
+      'scroll',
+      function () {
+        fadeEdges(tabRow);
+      },
+      { passive: true },
+    );
+    addEventListener('resize', function () {
+      fadeEdges(tabRow);
+      placeUnderline();
+    });
+    if (document.fonts)
+      document.fonts.ready.then(function () {
+        placeUnderline();
+        fadeEdges(tabRow);
+      });
     show(0);
     syncToggle();
     fadeEdges(tabRow);
     schedule();
     /* the underline is placed instantly first and animated only from the next change on */
     requestAnimationFrame(function () {
-      requestAnimationFrame(function () { underline.classList.add('ready'); });
+      requestAnimationFrame(function () {
+        underline.classList.add('ready');
+      });
     });
   }
 
   /* products page: each product's frame rises into place once, when a fifth of it is on screen */
   function initFrameReveal(frames) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('risen');
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
-    frames.forEach(function (el) { observer.observe(el); });
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('risen');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+    );
+    frames.forEach(function (el) {
+      observer.observe(el);
+    });
   }
 
   /* homepage: each part fades up once its top enters the screen, and anything already scrolled past shows at once.
@@ -284,13 +380,18 @@
     var rail = bar.querySelector('.prail');
     var links = [].slice.call(rail.querySelectorAll('a'));
     var start = document.querySelector('[data-pbar-start]');
-    var products = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+    var products = links.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    });
     var last = products[products.length - 1];
     var active = -1;
 
     function update() {
       var line = innerHeight * 0.4;
-      bar.classList.toggle('on', start.getBoundingClientRect().bottom < 80 && last.getBoundingClientRect().bottom > line);
+      bar.classList.toggle(
+        'on',
+        start.getBoundingClientRect().bottom < 80 && last.getBoundingClientRect().bottom > line,
+      );
       var k = -1;
       products.forEach(function (section, i) {
         var r = section.getBoundingClientRect();
@@ -305,9 +406,18 @@
       if (k > -1) keepInView(rail, links[k], 24);
     }
 
-    rail.addEventListener('scroll', function () { fadeEdges(rail); }, { passive: true });
+    rail.addEventListener(
+      'scroll',
+      function () {
+        fadeEdges(rail);
+      },
+      { passive: true },
+    );
     addEventListener('scroll', perFrame(update), { passive: true });
-    addEventListener('resize', function () { update(); fadeEdges(rail); });
+    addEventListener('resize', function () {
+      update();
+      fadeEdges(rail);
+    });
     update();
     fadeEdges(rail);
   }
@@ -315,7 +425,9 @@
   /* back to top: shown after the first screen; focus then moves to the brand link so keyboard users carry on from
      the top of the page */
   function initBackToTop(button) {
-    function sync() { button.classList.toggle('on', scrollY > innerHeight); }
+    function sync() {
+      button.classList.toggle('on', scrollY > innerHeight);
+    }
     addEventListener('scroll', sync, { passive: true });
     addEventListener('resize', sync);
     sync();
@@ -329,7 +441,9 @@
   /* the mobile menu is a <details>; close it once a link is chosen */
   function initMenu(menu) {
     menu.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () { menu.open = false; });
+      a.addEventListener('click', function () {
+        menu.open = false;
+      });
     });
   }
 
@@ -337,7 +451,9 @@
   function initCopyEmail(button, address) {
     function done() {
       button.textContent = 'Copied';
-      setTimeout(function () { button.textContent = 'Copy'; }, 1600);
+      setTimeout(function () {
+        button.textContent = 'Copy';
+      }, 1600);
     }
     function selectInstead() {
       var range = document.createRange();
@@ -348,7 +464,11 @@
       button.textContent = 'Press Ctrl+C';
     }
     button.addEventListener('click', function () {
-      try { navigator.clipboard.writeText(address.textContent).then(done, selectInstead); } catch (e) { selectInstead(); }
+      try {
+        navigator.clipboard.writeText(address.textContent).then(done, selectInstead);
+      } catch (e) {
+        selectInstead();
+      }
     });
   }
 
